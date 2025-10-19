@@ -1,23 +1,16 @@
-// -----------------------------
-// Quotes Data
-// -----------------------------
 let quotes = [
   { text: "The best way to get started is to quit talking and begin doing.", category: "Motivation" },
   { text: "Success is not final, failure is not fatal: It is the courage to continue that counts.", category: "Inspiration" },
   { text: "Don’t let yesterday take up too much of today.", category: "Motivation" }
 ];
 
-// -----------------------------
 // DOM References
-// -----------------------------
 const quoteDisplay = document.getElementById("quoteDisplay");
 const newQuoteBtn = document.getElementById("newQuote");
 const categorySelect = document.getElementById("categorySelect");
 const addQuoteFormContainer = document.getElementById("addQuoteFormContainer");
 
-// -----------------------------
 // Load & Save Quotes (Local Storage)
-// -----------------------------
 function loadQuotes() {
   const stored = localStorage.getItem("quotes");
   if (stored) {
@@ -30,9 +23,7 @@ function saveQuotes() {
   localStorage.setItem("quotes", JSON.stringify(quotes));
 }
 
-// -----------------------------
-// Populate Category Dropdown
-// -----------------------------
+// ✅ KEEP: Main category select populator
 function populateCategorySelect() {
   const categories = [...new Set(quotes.map(q => q.category))];
   categorySelect.innerHTML = '<option value="all">All</option>';
@@ -44,9 +35,12 @@ function populateCategorySelect() {
   });
 }
 
-// -----------------------------
-// Create Add Quote Form Dynamically
-// -----------------------------
+// ✅ NEW: alias for populateCategorySelect()
+function populateCategories() {
+  populateCategorySelect();
+}
+
+// Create Add Quote Form
 function createAddQuoteForm() {
   const quoteInput = document.createElement("input");
   quoteInput.id = "newQuoteText";
@@ -71,9 +65,7 @@ function createAddQuoteForm() {
   addQuoteFormContainer.appendChild(addButton);
 }
 
-// -----------------------------
-// Display Random Quote
-// -----------------------------
+// ✅ KEEP: Random quote display function
 function displayRandomQuote() {
   const selectedCategory = categorySelect.value;
 
@@ -89,16 +81,17 @@ function displayRandomQuote() {
   const randomIndex = Math.floor(Math.random() * filtered.length);
   const quote = filtered[randomIndex];
 
-  // Display
   quoteDisplay.innerHTML = `"<em>${quote.text}</em>" — <strong>${quote.category}</strong>`;
 
-  // Save to sessionStorage
   sessionStorage.setItem("lastQuote", JSON.stringify(quote));
 }
 
-// -----------------------------
-// Show Last Quote from Session Storage
-// -----------------------------
+// ✅ NEW: alias for displayRandomQuote()
+function categoryFilter() {
+  displayRandomQuote();
+}
+
+// Show Last Quote (Session Storage)
 function showLastQuoteFromSession() {
   const last = sessionStorage.getItem("lastQuote");
   if (last) {
@@ -107,9 +100,7 @@ function showLastQuoteFromSession() {
   }
 }
 
-// -----------------------------
-// Add Quote
-// -----------------------------
+// Add New Quote
 function addQuote() {
   const text = document.getElementById("newQuoteText").value.trim();
   const category = document.getElementById("newQuoteCategory").value.trim();
@@ -121,7 +112,7 @@ function addQuote() {
 
   quotes.push({ text, category });
   saveQuotes();
-  populateCategorySelect();
+  populateCategorySelect(); // or populateCategories()
 
   document.getElementById("newQuoteText").value = "";
   document.getElementById("newQuoteCategory").value = "";
@@ -129,9 +120,7 @@ function addQuote() {
   alert("Quote added successfully!");
 }
 
-// -----------------------------
-// Export to JSON
-// -----------------------------
+// Export Quotes as JSON
 function exportQuotesToJson() {
   const json = JSON.stringify(quotes, null, 2);
   const blob = new Blob([json], { type: "application/json" });
@@ -145,9 +134,7 @@ function exportQuotesToJson() {
   URL.revokeObjectURL(url);
 }
 
-// -----------------------------
-// Import from JSON
-// -----------------------------
+// Import Quotes from JSON
 function importFromJsonFile(event) {
   const file = event.target.files[0];
   if (!file) return;
@@ -163,7 +150,7 @@ function importFromJsonFile(event) {
       });
 
       saveQuotes();
-      populateCategorySelect();
+      populateCategorySelect(); // or populateCategories()
       alert("Quotes imported successfully!");
     } catch (error) {
       alert("Error importing JSON file. Please check the format.");
@@ -172,12 +159,10 @@ function importFromJsonFile(event) {
   reader.readAsText(file);
 }
 
-// -----------------------------
-// Initialization
-// -----------------------------
+// Init
 loadQuotes();
 createAddQuoteForm();
 showLastQuoteFromSession();
 
-newQuoteBtn.addEventListener("click", displayRandomQuote);
-
+// Use alias or original function — both work
+newQuoteBtn.addEventListener("click", categoryFilter);
