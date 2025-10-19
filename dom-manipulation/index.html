@@ -2,20 +2,49 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dynamic Quote Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dynamic Quote Generator with Sync</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      max-width: 600px;
+    }
+    #quoteDisplay {
+      margin: 20px 0;
+      font-style: italic;
+      font-size: 1.2em;
+      min-height: 60px;
+    }
+    #syncNotification {
+      margin-top: 20px;
+      font-weight: bold;
+      display: none;
+    }
+    button, input, select {
+      padding: 6px 10px;
+      font-size: 1em;
+      margin-right: 10px;
+    }
+    #addQuoteFormContainer {
+      margin-top: 30px;
+    }
+    #importExportContainer {
+      margin-top: 30px;
+    }
+    label {
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
   <h1>Dynamic Quote Generator</h1>
 
   <!-- Quote Display -->
-  <div id="quoteDisplay" style="margin: 20px 0; font-style: italic;"></div>
+  <div id="quoteDisplay">Loading quote...</div>
 
   <!-- Show New Quote Button -->
   <button id="newQuote">Show New Quote</button>
-
-  <!-- Add Quote Form (dynamically generated) -->
-  <div id="addQuoteFormContainer" style="margin-top: 30px;"></div>
 
   <!-- Category Filter -->
   <div style="margin-top: 20px;">
@@ -25,12 +54,24 @@
     </select>
   </div>
 
-  <!-- Import/Export -->
-  <div style="margin-top: 20px;">
-    <button onclick="exportQuotesToJson()">Export Quotes</button>
-    <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
+  <!-- Add Quote Form Container (dynamically populated) -->
+  <div id="addQuoteFormContainer"></div>
+
+  <!-- Import / Export Section -->
+  <div id="importExportContainer">
+    <button id="exportQuotesButton">Export Quotes as JSON</button>
+    <label for="importFile" style="margin-left: 15px; cursor: pointer; color: blue; text-decoration: underline;">Import Quotes from JSON</label>
+    <input type="file" id="importFile" accept=".json" style="display:none" />
   </div>
 
+  <!-- Sync Notification -->
+  <div id="syncNotification"></div>
+
+  <!-- Manual Sync Button -->
+  <button id="manualSyncBtn" style="margin-top: 10px;">Sync with Server</button>
+
+  <!-- Include script -->
   <script src="script.js"></script>
 </body>
 </html>
+
