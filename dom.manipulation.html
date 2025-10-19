@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Quote Generator</title>
+    <!-- Load Tailwind CSS via CDN for responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Apply Inter font and basic styling */
+        body {
+            font-family: "Inter", sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            padding: 20px;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#4f46e5',
+                        'secondary': '#10b981',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <h1 class="text-4xl font-extrabold text-primary mb-10 mt-5">Dynamic Quote Generator</h1>
+
+    <!-- Container for displaying the quote -->
+    <div id="quoteDisplay" class="max-w-xl w-full bg-white p-8 shadow-xl rounded-xl transition duration-300 ease-in-out hover:shadow-2xl mb-8 border-l-4 border-primary">
+        <!-- Initial content will be set by JavaScript -->
+        <p class="text-gray-500 italic">Loading quote...</p>
+    </div>
+
+    <!-- Controls for generating new quote -->
+    <button id="newQuote" class="px-6 py-3 mb-10 bg-secondary text-white font-bold rounded-lg shadow-md hover:bg-emerald-500 transition duration-150 transform hover:scale-105">
+        Show New Quote
+    </button>
+
+    <div class="w-full max-w-xl bg-white p-6 shadow-lg rounded-xl">
+        <h2 class="text-2xl font-semibold mb-4 text-primary">Add a New Quote</h2>
+        <!-- Container for dynamically generated form elements -->
+        <div id="addQuoteSection" class="space-y-4">
+            <!-- Form will be dynamically created here by JS -->
+        </div>
+    </div>
+
+    <!-- JavaScript Implementation -->
+    <script>
+        let quotes = [
+            { text: "The only way to do great work is to love what you do.", category: "Work" },
+            { text: "Strive not to be a success, but rather to be of value.", category: "Value" },
+            { text: "Life is what happens when you’re busy making other plans.", category: "Life" },
+            { text: "Where there is love there is life.", category: "Love" },
+            { text: "The future belongs to those who believe in the beauty of their dreams.", category: "Inspiration" },
+        ];
+
+        // --- DOM REFERENCES ---
+        const quoteDisplay = document.getElementById('quoteDisplay');
+        const newQuoteButton = document.getElementById('newQuote');
+        const addQuoteSection = document.getElementById('addQuoteSection');
+
+        /**
+         * Selects and displays a random quote from the global array.
+         * Creates and appends the quote text and category elements dynamically.
+         */
+        function showRandomQuote() {
+            // Clear existing content
+            quoteDisplay.innerHTML = '';
+
+            if (quotes.length === 0) {
+                quoteDisplay.innerHTML = '<p class="text-red-500 font-semibold">No quotes available. Add one!</p>';
+                return;
+            }
+
+            // 1. Get a random quote object
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            const quote = quotes[randomIndex];
+
+            // 2. Dynamically create the quote text element
+            const quoteText = document.createElement('p');
+            // Set the content and style attributes
+            quoteText.textContent = `“${quote.text}”`;
+            quoteText.setAttribute('class', 'text-2xl font-medium mb-4 text-gray-800 italic');
+            
+            // 3. Dynamically create the category element
+            const quoteCategory = document.createElement('p');
+            // Set the content and style attributes
+            quoteCategory.textContent = `— Category: ${quote.category}`;
+            quoteCategory.setAttribute('class', 'text-sm font-semibold text-primary/80 text-right uppercase');
+
+            // 4. Append the new elements to the display container
+            quoteDisplay.appendChild(quoteText);
+            quoteDisplay.appendChild(quoteCategory);
+        }
+
+        /**
+         * Handles the addition of a new quote from the dynamic form.
+         * Updates the internal array and resets the form.
+         */
+        function addQuote() {
+            // Get dynamically created input elements by their ID
+            const newQuoteText = document.getElementById('newQuoteText');
+            const newQuoteCategory = document.getElementById('newQuoteCategory');
+
+            const text = newQuoteText.value.trim();
+            const category = newQuoteCategory.value.trim();
+
+            if (text && category) {
+                // 1. Update the internal data structure (the quotes array)
+                quotes.push({ text: text, category: category });
+
+                // 2. Clear the input fields using DOM manipulation
+                newQuoteText.value = '';
+                newQuoteCategory.value = '';
+
+                // 3. Provide feedback (dynamically creating a message)
+                const feedback = document.createElement('p');
+                feedback.textContent = `Quote added successfully! (${category})`;
+                feedback.setAttribute('class', 'text-secondary font-medium mt-4 transition-opacity duration-500');
+                
+                // Prepend the feedback to the section
+                addQuoteSection.appendChild(feedback);
+
+                // Optional: Automatically remove feedback after a few seconds
+                setTimeout(() => {
+                    feedback.remove(); // Advanced DOM manipulation: removing an element
+                }, 3000);
+
+                // Optional: Show the newly added quote
+                showRandomQuote(); 
+
+            } else {
+                alert('Please enter both the quote text and the category.');
+            }
+        }
+        
+        /**
+         * Dynamically generates the form elements for adding quotes.
+         * This fulfills the requirement to generate interactive elements via JS.
+         */
+        function renderQuoteForm() {
+            // --- 1. Create Input for Quote Text ---
+            const textInput = document.createElement('input');
+            textInput.setAttribute('id', 'newQuoteText');
+            textInput.setAttribute('type', 'text');
+            textInput.setAttribute('placeholder', 'Enter a new inspiring quote');
+            textInput.setAttribute('class', 'w-full p-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-150');
+
+            // --- 2. Create Input for Category ---
+            const categoryInput = document.createElement('input');
+            categoryInput.setAttribute('id', 'newQuoteCategory');
+            categoryInput.setAttribute('type', 'text');
+            categoryInput.setAttribute('placeholder', 'Enter quote category (e.g., Life, Work)');
+            categoryInput.setAttribute('class', 'w-full p-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-150');
+
+            // --- 3. Create Button ---
+            const addButton = document.createElement('button');
+            addButton.textContent = 'Add Quote';
+            addButton.setAttribute('class', 'w-full px-4 py-3 bg-primary text-white font-bold rounded-lg shadow-md hover:bg-indigo-600 transition duration-150');
+            
+            // Attach the function directly to the dynamically created button
+            addButton.addEventListener('click', addQuote); 
+
+            // --- 4. Append all elements to the section ---
+            addQuoteSection.appendChild(textInput);
+            addQuoteSection.appendChild(categoryInput);
+            addQuoteSection.appendChild(addButton);
+        }
+
+
+        // --- INITIALIZATION & EVENT LISTENERS ---
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set up the initial quote display
+            showRandomQuote(); 
+            
+            // Dynamically render the form elements
+            renderQuoteForm();
+
+            // Set up the event listener for the main button
+            newQuoteButton.addEventListener('click', showRandomQuote);
+        });
+
+        // Note on alert: I've included a standard alert for failed validation,
+        // but for a production app, this would be replaced by a custom modal/toast.
+    </script>
+</body>
+</html>
