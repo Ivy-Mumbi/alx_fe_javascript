@@ -11,9 +11,10 @@ const newQuoteBtn = document.getElementById("newQuote");
 const addQuoteBtn = document.getElementById("addQuoteButton");
 const categorySelect = document.getElementById("categorySelect");
 
-// Function to display a random quote
-function showRandomQuote() {
+// ✅ Function: Logic to select a random quote from array (based on category)
+function displayRandomQuote() {
   const selectedCategory = categorySelect.value;
+
   const filteredQuotes = selectedCategory === "all"
     ? quotes
     : quotes.filter(q => q.category.toLowerCase() === selectedCategory.toLowerCase());
@@ -25,10 +26,17 @@ function showRandomQuote() {
 
   const randomIndex = Math.floor(Math.random() * filteredQuotes.length);
   const quote = filteredQuotes[randomIndex];
+
+  // ✅ DOM Update
   quoteDisplay.textContent = `"${quote.text}" — ${quote.category}`;
 }
 
-// Function to add a new quote
+// ✅ Function: Show Random Quote (wrapper for displayRandomQuote)
+function showRandomQuote() {
+  displayRandomQuote();
+}
+
+// ✅ Function: Add new quote to array and update DOM
 function addQuote() {
   const quoteText = document.getElementById("newQuoteText").value.trim();
   const quoteCategory = document.getElementById("newQuoteCategory").value.trim();
@@ -38,14 +46,14 @@ function addQuote() {
     return;
   }
 
-  // Add to quotes array
+  // ✅ Add quote to the quotes array
   quotes.push({ text: quoteText, category: quoteCategory });
 
-  // Clear input fields
+  // ✅ Clear form inputs
   document.getElementById("newQuoteText").value = "";
   document.getElementById("newQuoteCategory").value = "";
 
-  // Add new category to dropdown if not already present
+  // ✅ Update category dropdown dynamically if new
   const existingCategories = Array.from(categorySelect.options).map(opt => opt.value.toLowerCase());
   if (!existingCategories.includes(quoteCategory.toLowerCase())) {
     const newOption = document.createElement("option");
@@ -57,9 +65,12 @@ function addQuote() {
   alert("Quote added successfully!");
 }
 
-// Attach event listeners
+// ✅ Event listener: Trigger quote display on button click
 newQuoteBtn.addEventListener("click", showRandomQuote);
+
+// ✅ Event listener: Trigger quote addition on form button click
 addQuoteBtn.addEventListener("click", addQuote);
 
-// Initial load
+// ✅ Initial quote display on load
 showRandomQuote();
+
