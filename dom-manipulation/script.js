@@ -20,15 +20,15 @@ function displayRandomQuote() {
     : quotes.filter(q => q.category.toLowerCase() === selectedCategory.toLowerCase());
 
   if (filteredQuotes.length === 0) {
-    quoteDisplay.textContent = "No quotes available in this category.";
+    quoteDisplay.innerHTML = "<em>No quotes available in this category.</em>";
     return;
   }
 
   const randomIndex = Math.floor(Math.random() * filteredQuotes.length);
   const quote = filteredQuotes[randomIndex];
 
-  // ✅ DOM Update
-  quoteDisplay.textContent = `"${quote.text}" — ${quote.category}`;
+  // ✅ DOM Update using innerHTML with formatting
+  quoteDisplay.innerHTML = `"<em>${quote.text}</em>" — <strong>${quote.category}</strong>`;
 }
 
 // ✅ Function: Show Random Quote (wrapper for displayRandomQuote)
@@ -41,36 +41,4 @@ function addQuote() {
   const quoteText = document.getElementById("newQuoteText").value.trim();
   const quoteCategory = document.getElementById("newQuoteCategory").value.trim();
 
-  if (!quoteText || !quoteCategory) {
-    alert("Please enter both quote text and category.");
-    return;
-  }
-
-  // ✅ Add quote to the quotes array
-  quotes.push({ text: quoteText, category: quoteCategory });
-
-  // ✅ Clear form inputs
-  document.getElementById("newQuoteText").value = "";
-  document.getElementById("newQuoteCategory").value = "";
-
-  // ✅ Update category dropdown dynamically if new
-  const existingCategories = Array.from(categorySelect.options).map(opt => opt.value.toLowerCase());
-  if (!existingCategories.includes(quoteCategory.toLowerCase())) {
-    const newOption = document.createElement("option");
-    newOption.value = quoteCategory;
-    newOption.textContent = quoteCategory;
-    categorySelect.appendChild(newOption);
-  }
-
-  alert("Quote added successfully!");
-}
-
-// ✅ Event listener: Trigger quote display on button click
-newQuoteBtn.addEventListener("click", showRandomQuote);
-
-// ✅ Event listener: Trigger quote addition on form button click
-addQuoteBtn.addEventListener("click", addQuote);
-
-// ✅ Initial quote display on load
-showRandomQuote();
-
+  i
