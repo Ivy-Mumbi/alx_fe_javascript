@@ -2,75 +2,64 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dynamic Quote Generator with Sync</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dynamic Quote Generator — Storage & JSON</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 20px;
-      max-width: 600px;
+      text-align: center;
+      padding: 36px;
+      background: #f6f7fb;
+      color: #222;
     }
     #quoteDisplay {
-      margin: 20px 0;
-      font-style: italic;
-      font-size: 1.2em;
-      min-height: 60px;
+      margin: 18px auto;
+      padding: 22px;
+      width: 70%;
+      min-height: 72px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      font-size: 1.1rem;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
-    #syncNotification {
-      margin-top: 20px;
-      font-weight: bold;
-      display: none;
+    .controls, .importExport, .addForm {
+      margin-top: 12px;
     }
-    button, input, select {
-      padding: 6px 10px;
-      font-size: 1em;
-      margin-right: 10px;
+    input, select, button {
+      padding: 8px 10px;
+      margin: 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 0.95rem;
     }
-    #addQuoteFormContainer {
-      margin-top: 30px;
-    }
-    #importExportContainer {
-      margin-top: 30px;
-    }
-    label {
-      font-weight: bold;
-    }
+    button { cursor: pointer; background: #2563eb; color: #fff; border: none; }
+    button.secondary { background: #6b7280; }
+    small { color: #555; display:block; margin-top:8px; }
   </style>
 </head>
 <body>
   <h1>Dynamic Quote Generator</h1>
 
-  <!-- Quote Display -->
-  <div id="quoteDisplay">Loading quote...</div>
-
-  <!-- Show New Quote Button -->
-  <button id="newQuote">Show New Quote</button>
-
-  <!-- Category Filter -->
-  <div style="margin-top: 20px;">
-    <label for="categorySelect">Choose a category:</label>
-    <select id="categorySelect">
-      <option value="all">All</option>
-    </select>
+  <div class="controls">
+    <label for="categorySelect">Category:</label>
+    <select id="categorySelect"></select>
+    <button id="newQuote">Show New Quote</button>
+    <button id="showAll" class="secondary">Show All Quotes</button>
   </div>
 
-  <!-- Add Quote Form Container (dynamically populated) -->
-  <div id="addQuoteFormContainer"></div>
+  <div id="quoteDisplay">Click “Show New Quote” to begin — or add/import quotes.</div>
 
-  <!-- Import / Export Section -->
-  <div id="importExportContainer">
-    <button id="exportQuotesButton">Export Quotes as JSON</button>
-    <label for="importFile" style="margin-left: 15px; cursor: pointer; color: blue; text-decoration: underline;">Import Quotes from JSON</label>
-    <input type="file" id="importFile" accept=".json" style="display:none" />
+  <div class="addForm" id="addQuoteSection"></div>
+
+  <div class="importExport">
+    <button id="exportJson">Export Quotes (JSON)</button>
+    <input type="file" id="importFile" accept=".json" />
+    <small>Import format: an array of objects like [{ "text": "...", "category": "..." }, ...]</small>
   </div>
 
-  <!-- Sync Notification -->
-  <div id="syncNotification"></div>
-
-  <!-- Manual Sync Button -->
-  <button id="manualSyncBtn" style="margin-top: 10px;">Sync with Server</button>
-
-  <!-- Include script -->
   <script src="script.js"></script>
 </body>
 </html>
