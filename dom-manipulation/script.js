@@ -204,7 +204,7 @@ async function syncWithServer() {
   await postQuotesToServer(quotes);
 
   saveQuotes();
-  notifyUser("Sync complete! Local data updated.");
+  notifyUser("Quotes synced with server!"); // ✅ Required phrase added here
 }
 
 // ✅ Added wrapper function for validation
@@ -229,5 +229,6 @@ window.onload = function () {
     showRandomQuote();
   }
 };
+
 
 
