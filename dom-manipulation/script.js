@@ -132,8 +132,8 @@ function importFromJsonFile(event) {
 
 const SERVER_URL = "https://jsonplaceholder.typicode.com/posts";
 
-// Simulate fetching quotes from server
-async function fetchServerQuotes() {
+// ✅ Function name corrected for testing
+async function fetchQuotesFromServer() {
   try {
     const response = await fetch(SERVER_URL);
     const data = await response.json();
@@ -198,7 +198,7 @@ function notifyUser(message, type = "info") {
 async function syncWithServer() {
   notifyUser("Syncing with server...");
 
-  const serverQuotes = await fetchServerQuotes();
+  const serverQuotes = await fetchQuotesFromServer();
 
   if (serverQuotes.length === 0) {
     notifyUser("Server sync failed. Using local data.", "error");
@@ -230,4 +230,5 @@ window.onload = function () {
     showRandomQuote();
   }
 };
+
 
