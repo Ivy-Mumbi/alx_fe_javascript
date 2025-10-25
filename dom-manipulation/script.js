@@ -5,7 +5,7 @@
 // Retrieve existing quotes or initialize defaults
 let quotes = JSON.parse(localStorage.getItem('quotes')) || [
   { text: "The best way to get started is to quit talking and begin doing.", category: "Motivation" },
-  { text: "Life is what happens when you’re busy making other plans.", category: "Life" },
+  { text: "Life is what happens when you’re too busy making other plans.", category: "Life" },
   { text: "Don’t watch the clock; do what it does. Keep going.", category: "Motivation" },
 ];
 
